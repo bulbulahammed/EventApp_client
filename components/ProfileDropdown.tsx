@@ -12,6 +12,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { sessionProps } from "@/types/globalTypes";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { FaRegUserCircle } from "react-icons/fa";
 import { toast } from "react-toastify";
 
@@ -23,6 +24,7 @@ export default function ProfileDropdown({
   const email = useAppSelector((state) => state.auth.user.email);
   const sessionEmail = session?.user?.email;
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   const handleLogout = () => {
     signOut();
@@ -31,6 +33,7 @@ export default function ProfileDropdown({
     localStorage.removeItem("email");
     localStorage.removeItem("id");
     toast.success("Successfully logged out!");
+    router.push("/");
   };
 
   return (
