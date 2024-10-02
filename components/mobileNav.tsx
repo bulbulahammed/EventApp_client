@@ -6,7 +6,7 @@ import Link from "next/link";
 import { CiMenuBurger } from "react-icons/ci";
 import ProfileDropdown from "./ProfileDropdown";
 
-export default function MobileNav(){ 
+export default function MobileNav() {
   return (
     <div className="flex md:hidden">
       <Sheet>
@@ -23,8 +23,8 @@ export default function MobileNav(){
             <Link href="/">Home</Link>
             <Link href="/">Project</Link>
             <Link href="/">Events</Link>
-            <Link href="/events/create">Add Events</Link>
-            <ProfileDropdown/>
+            <Link href="/events/create">Create Event</Link>
+            <ProfileDropdown />
           </nav>
         </SheetContent>
       </Sheet>

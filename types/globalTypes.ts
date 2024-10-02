@@ -6,11 +6,3 @@ export type IUser = {
   email: string;
   password: string;
 };
-
-// export type sessionProps = {
-//   user?: {
-//     name?: string | null | undefined;
-//     email?: string | null | undefined;
-//     image?: string | null | undefined;
-//   };
-// };
