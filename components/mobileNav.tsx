@@ -2,29 +2,11 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { defaultState } from "@/redux/features/user/authSlice";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { sessionProps } from "@/types/globalTypes";
 import Link from "next/link";
 import { CiMenuBurger } from "react-icons/ci";
-import { toast } from "react-toastify";
 import ProfileDropdown from "./ProfileDropdown";
 
-export default function MobileNav({
-  session
-}: {
-  session: sessionProps | null;
-}) {
-  const email = useAppSelector((state) => state.auth.user.email);
-  const dispatch = useAppDispatch();
-
-  const handleLogout = () => {
-    dispatch(defaultState());
-    localStorage.removeItem("token");
-    localStorage.removeItem("email");
-    localStorage.removeItem("id");
-    toast.success("Successfully logged out!");
-  };
+export default function MobileNav(){ 
   return (
     <div className="flex md:hidden">
       <Sheet>
@@ -42,7 +24,7 @@ export default function MobileNav({
             <Link href="/">Project</Link>
             <Link href="/">Events</Link>
             <Link href="/events/create">Add Events</Link>
-            <ProfileDropdown session={session} />
+            <ProfileDropdown/>
           </nav>
         </SheetContent>
       </Sheet>

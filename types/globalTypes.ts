@@ -7,10 +7,10 @@ export type IUser = {
   password: string;
 };
 
-export type sessionProps = {
-  user?: {
-    name?: string | null | undefined;
-    email?: string | null | undefined;
-    image?: string | null | undefined;
-  };
-};
+// export type sessionProps = {
+//   user?: {
+//     name?: string | null | undefined;
+//     email?: string | null | undefined;
+//     image?: string | null | undefined;
+//   };
+// };

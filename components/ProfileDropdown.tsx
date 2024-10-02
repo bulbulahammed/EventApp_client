@@ -9,25 +9,17 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { defaultState } from "@/redux/features/user/authSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { sessionProps } from "@/types/globalTypes";
-import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FaRegUserCircle } from "react-icons/fa";
 import { toast } from "react-toastify";
 
-export default function ProfileDropdown({
-  session
-}: {
-  session: sessionProps | null;
-}) {
+export default function ProfileDropdown() {
   const email = useAppSelector((state) => state.auth.user.email);
-  const sessionEmail = session?.user?.email;
   const dispatch = useAppDispatch();
   const router = useRouter();
 
   const handleLogout = () => {
-    signOut();
     dispatch(defaultState());
     localStorage.removeItem("token");
     localStorage.removeItem("email");
@@ -47,7 +39,7 @@ export default function ProfileDropdown({
         <DropdownMenuContent className="w-56 text-center mx-auto">
           <DropdownMenuLabel>Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          {email || sessionEmail ? (
+          {email ? (
             <>
               <DropdownMenuItem className="w-full">
                 <button
