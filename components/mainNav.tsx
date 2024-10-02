@@ -9,7 +9,7 @@ export default function MainNav() {
         <Link href="/">Home</Link>
         <Link href="/">Project</Link>
         <Link href="/">Events</Link>
-        <Link href="/events/create">Add Events</Link>
+        <Link href="/events/create">Create Event</Link>
         <ProfileDropdown />
       </nav>
     </div>
