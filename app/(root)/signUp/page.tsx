@@ -73,29 +73,6 @@ export default function Signup() {
               Welcome To EventApp!
             </p>
           </div>
-          {/* Social Login */}
-          <div className="w-full h-auto flex items-center gap-7">
-            <div className="w-1/2 h-auto">
-              <button
-                className="w-full h-12 p-4 outline-none bg-transparent border-[2px] border-gray-200/40 rounded-md flex items-center gap-x-2 hover:bg-[#DB4437] ease-out duration-700 text-white"
-                onClick={() =>
-                  signIn("google", { callbackUrl: "http://localhost:3000" })
-                }
-              >
-                <FaGoogle /> <p>Google</p>
-              </button>
-            </div>
-            <div className="w-1/2 h-auto">
-              <button
-                className="w-full h-12 p-4 outline-none bg-transparent border-[2px] border-gray-200/40 rounded-md flex items-center gap-x-2 hover:bg-[#24292e] ease-out duration-700 text-white"
-                onClick={() =>
-                  signIn("github", { callbackUrl: "http://localhost:3000" })
-                }
-              >
-                <FaGithub /> <p>Github</p>
-              </button>
-            </div>
-          </div>
           {/* Devider */}
           <div className="w-full h-auto flex items-center gap-x-1 my-5">
             <div className="w-1/2 h-[1.5px] bg-gray-200/40 rounded-md"></div>
