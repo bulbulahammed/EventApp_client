@@ -3,11 +3,9 @@
 import { Button } from "@/components/ui/button";
 import { useAppDispatch } from "@/redux/hooks";
 import { ReloadIcon } from "@radix-ui/react-icons";
-import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { FormEvent, useEffect, useState } from "react";
-import { FaGithub, FaGoogle } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { setUser } from "../../../redux/features/user/authSlice";
 import { useSignInUserMutation } from "../../../redux/features/user/userApiSlice";
@@ -89,9 +87,7 @@ export default function Login() {
           </div>
           {/* Devider */}
           <div className="w-full h-auto flex items-center gap-x-1 my-5">
-            <div className="w-1/2 h-[1.5px] bg-gray-200/40 rounded-md"></div>
-            <p className="text-sm text-gray-300 font-normal px-2">OR</p>
-            <div className="w-1/2 h-[1.5px] bg-gray-200/40 rounded-md"></div>
+            <div className="w-full h-[1.5px] bg-gray-200/40 rounded-md"></div>
           </div>
           {/* Form  */}
           <form onSubmit={handleSubmit}>
@@ -159,6 +155,12 @@ export default function Login() {
                 Sign In
               </Button>
             )}
+            {/* Devider */}
+            <div className="w-full h-auto flex items-center gap-x-1 my-5">
+              <div className="w-1/2 h-[1.5px] bg-gray-200/40 rounded-md"></div>
+              <p className="text-sm text-gray-300 font-normal px-2">OR</p>
+              <div className="w-1/2 h-[1.5px] bg-gray-200/40 rounded-md"></div>
+            </div>
             <div className="w-full h-auto flex items-center justify-between gap-x-1">
               <p className="text-white text-xs font-thin">
                 Don't have an account?
