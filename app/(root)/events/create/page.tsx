@@ -1,7 +1,8 @@
+"use client";
+
 import EventForm from "@/components/shared/EventForm";
 
 export default function CreateEvent() {
-  
   return (
     <>
       <section className="bg-primary-500 bg-dotted-pattern bg-cover bg-center py-5 md:py-10">
