@@ -10,7 +10,7 @@ export default function CreateEvent() {
           Create Event
         </h3>
       </section>
-      <div className="wrapper my-8">
+      <div>
         <EventForm />
       </div>
     </>

@@ -2,11 +2,20 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { useAppSelector } from "@/redux/hooks";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { CiMenuBurger } from "react-icons/ci";
 import ProfileDropdown from "./ProfileDropdown";
 
 export default function MobileNav() {
+  const email = useAppSelector((state) => state.auth.user.email);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    setIsLoaded(true);
+  }, []);
+
   return (
     <div className="flex md:hidden">
       <Sheet>
@@ -23,7 +32,9 @@ export default function MobileNav() {
             <Link href="/">Home</Link>
             <Link href="/">Project</Link>
             <Link href="/">Events</Link>
-            <Link href="/events/create">Create Event</Link>
+            {isLoaded && email && (
+              <Link href="/events/create">Create Event</Link>
+            )}
             <ProfileDropdown />
           </nav>
         </SheetContent>
