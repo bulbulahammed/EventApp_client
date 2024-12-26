@@ -158,7 +158,7 @@ export default function EventForm() {
             </label>
             <input
               type="text"
-              className="w-full h-12 p-4 outline-none bg-transparent border-[2px] border-gray-200/40 text-white rounded-md"
+              className="w-full h-32 p-4 outline-none bg-transparent border-[2px] border-gray-200/40 text-white rounded-md"
               name="description"
               value={formData.event.description}
               onChange={handleChange}
