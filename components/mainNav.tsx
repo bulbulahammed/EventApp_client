@@ -2,8 +2,8 @@
 
 import { useAppSelector } from "@/redux/hooks";
 import Link from "next/link";
-import ProfileDropdown from "./ProfileDropdown";
 import { useEffect, useState } from "react";
+import ProfileDropdown from "./ProfileDropdown";
 
 export default function MainNav() {
   const email = useAppSelector((state) => state.auth.user.email);

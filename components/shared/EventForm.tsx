@@ -2,22 +2,36 @@
 import { Button } from "@/components/ui/button";
 import { useCreateEventMutation } from "@/redux/features/Event/eventApiSlice";
 import { useAppSelector } from "@/redux/hooks";
+import { UploadButton } from "@/utils/uploadthing";
 import React, { FormEvent, useEffect, useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { toast } from "react-toastify";
+
+// Utility function to format date as YYYY-MM-DD
+const formatDate = (date: Date): string => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
 
 export default function EventForm() {
   const organizer = useAppSelector((state) => state.auth.user.email);
   const [createEvent, { data, isLoading, isError, isSuccess }] =
     useCreateEventMutation();
 
+  const [startDate, setStartDate] = useState<Date>(new Date()); // Explicitly typed as Date
+  const [endDate, setEndDate] = useState<Date>(new Date()); // Explicitly typed as Date
+
   const [formData, setFormData] = useState({
     event: {
       title: "",
       description: "",
       location: "",
-      image: "Here will be the  image url",
-      startDate: "23/October/2024",
-      endDate: "23/October/2024",
+      image: "",
+      startDate: startDate,
+      endDate: endDate,
       category: "",
       price: "",
       isFree: false,
@@ -25,9 +39,30 @@ export default function EventForm() {
     }
   });
 
+  // Function to reset the form
+  const resetForm = () => {
+    setFormData({
+      event: {
+        title: "",
+        description: "",
+        location: "",
+        image: "",
+        startDate: new Date(), // Reset to current date
+        endDate: new Date(), // Reset to current date
+        category: "",
+        price: "",
+        isFree: false,
+        organizer: organizer || ""
+      }
+    });
+    setStartDate(new Date()); // Reset start date picker
+    setEndDate(new Date()); // Reset end date picker
+  };
+
   useEffect(() => {
     if (isSuccess) {
       toast.success(data?.message, { toastId: "createEventSuccess" });
+      resetForm(); // Reset the form after successful event creation
     } else if (isError) {
       toast.error("Failed to create Event", { toastId: "createEventError" });
     }
@@ -46,6 +81,15 @@ export default function EventForm() {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    // Validate end date
+    if (formData.event.endDate <= formData.event.startDate) {
+      toast.error("End date must be after the start date.", {
+        toastId: "dateValidationError"
+      });
+      return; // Stop form submission if validation fails
+    }
+
     const {
       title,
       description,
@@ -58,14 +102,18 @@ export default function EventForm() {
       isFree
     } = formData.event;
 
+    // Format dates as YYYY-MM-DD
+    const formattedStartDate = formatDate(startDate);
+    const formattedEndDate = formatDate(endDate);
+
     const eventData = {
       event: {
         title,
         description,
         location,
         image,
-        startDate,
-        endDate,
+        startDate: formattedStartDate, // Use formatted date
+        endDate: formattedEndDate, // Use formatted date
         category,
         price,
         isFree,
@@ -163,6 +211,100 @@ export default function EventForm() {
               value={formData.event.description}
               onChange={handleChange}
               placeholder="Write Event Description"
+            />
+          </div>
+
+          {/* Date Pickers for Start and End Date */}
+          <div className="w-full h-auto flex gap-7 justify-center my-4">
+            <div className="w-1/2">
+              <label className="label">
+                <span className="text-white text-sm">Start Date</span>
+              </label>
+              <DatePicker
+                selected={formData.event.startDate}
+                onChange={(date: Date | null) => {
+                  if (date) {
+                    setStartDate(date);
+                    setFormData((prevData) => ({
+                      ...prevData,
+                      event: {
+                        ...prevData.event,
+                        startDate: date
+                      }
+                    }));
+
+                    // If the new start date is after the current end date, reset the end date
+                    if (date > formData.event.endDate) {
+                      setEndDate(date);
+                      setFormData((prevData) => ({
+                        ...prevData,
+                        event: {
+                          ...prevData.event,
+                          endDate: date
+                        }
+                      }));
+                    }
+                  }
+                }}
+                className="w-full h-12 p-4 outline-none bg-transparent border-[2px] border-gray-200/40 text-white rounded-md"
+                placeholderText="Select Start Date"
+              />
+            </div>
+            <div className="w-1/2">
+              <label className="label">
+                <span className="text-white text-sm">End Date</span>
+              </label>
+              <DatePicker
+                selected={formData.event.endDate}
+                onChange={(date: Date | null) => {
+                  if (date) {
+                    if (date <= formData.event.startDate) {
+                      toast.error("End date must be after the start date.", {
+                        toastId: "endDateError"
+                      });
+                      return; // Do not update the end date if it's invalid
+                    }
+                    setEndDate(date);
+                    setFormData((prevData) => ({
+                      ...prevData,
+                      event: {
+                        ...prevData.event,
+                        endDate: date
+                      }
+                    }));
+                  }
+                }}
+                minDate={formData.event.startDate} // Disable dates before the start date
+                className="w-full h-12 p-4 outline-none bg-transparent border-[2px] border-gray-200/40 text-white rounded-md"
+                placeholderText="Select End Date"
+              />
+            </div>
+          </div>
+
+          <div className="mt-4">
+            <label className="label">
+              <span className="text-sm text-white">Image</span>
+            </label>
+            <UploadButton
+              endpoint="imageUploader"
+              onClientUploadComplete={(res) => {
+                if (res && res.length > 0) {
+                  const imageUrl = res[0].url;
+                  setFormData((prevData) => ({
+                    ...prevData,
+                    event: {
+                      ...prevData.event,
+                      image: imageUrl
+                    }
+                  }));
+                  toast.success("Image uploaded successfully!");
+                } else {
+                  toast.error("Image upload failed!");
+                }
+              }}
+              onUploadError={(error: Error) => {
+                alert(`ERROR! ${error.message}`);
+              }}
             />
           </div>
           <Button
