@@ -3,7 +3,8 @@ import { Button } from "@/components/ui/button";
 import { useCreateEventMutation } from "@/redux/features/Event/eventApiSlice";
 import { useAppSelector } from "@/redux/hooks";
 import { UploadButton } from "@/utils/uploadthing";
-import React, { FormEvent, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import React, { FormEvent, useCallback, useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { toast } from "react-toastify";
@@ -20,6 +21,8 @@ export default function EventForm() {
   const organizer = useAppSelector((state) => state.auth.user.email);
   const [createEvent, { data, isLoading, isError, isSuccess }] =
     useCreateEventMutation();
+
+  const router = useRouter();
 
   const [startDate, setStartDate] = useState<Date>(new Date()); // Explicitly typed as Date
   const [endDate, setEndDate] = useState<Date>(new Date()); // Explicitly typed as Date
@@ -40,33 +43,38 @@ export default function EventForm() {
   });
 
   // Function to reset the form
-  const resetForm = () => {
+  const resetForm = useCallback(() => {
     setFormData({
       event: {
         title: "",
         description: "",
         location: "",
         image: "",
-        startDate: new Date(), // Reset to current date
-        endDate: new Date(), // Reset to current date
+        startDate: new Date(),
+        endDate: new Date(),
         category: "",
         price: "",
         isFree: false,
         organizer: organizer || ""
       }
     });
-    setStartDate(new Date()); // Reset start date picker
-    setEndDate(new Date()); // Reset end date picker
-  };
+    setStartDate(new Date());
+    setEndDate(new Date());
+  }, [organizer]);
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success(data?.message, { toastId: "createEventSuccess" });
-      resetForm(); // Reset the form after successful event creation
+      toast.success("Event created successfully!", {
+        toastId: "createEventSuccess"
+      });
+      resetForm();
+      router.push(`/events`);
     } else if (isError) {
-      toast.error("Failed to create Event", { toastId: "createEventError" });
+      toast.error("Failed to create Event", {
+        toastId: "createEventError"
+      });
     }
-  }, [isSuccess, isError, data]);
+  }, [isSuccess, isError, data, router, resetForm]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

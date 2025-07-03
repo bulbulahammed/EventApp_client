@@ -18,7 +18,7 @@ export default function MainNav() {
       <nav className="flex items-center gap-3 mr-8 lg:gap-4">
         <Link href="/">Home</Link>
         <Link href="/">Project</Link>
-        <Link href="/">Events</Link>
+        <Link href="/events">Events</Link>
         {isLoaded && email && <Link href="/events/create">Create Event</Link>}
         <ProfileDropdown />
       </nav>
