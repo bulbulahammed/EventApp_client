@@ -31,7 +31,7 @@ export default function MobileNav() {
           <nav className="flex flex-col items-center gap-3 text-white">
             <Link href="/">Home</Link>
             <Link href="/">Project</Link>
-            <Link href="/">Events</Link>
+            <Link href="/events">Events</Link>
             {isLoaded && email && (
               <Link href="/events/create">Create Event</Link>
             )}
